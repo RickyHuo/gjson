@@ -2504,6 +2504,7 @@ func parseUint(s string) (n uint64, ok bool) {
 func parseInt(s string) (n int64, ok bool) {
 	var i int
 	var sign bool
+	var invaildSymbol int
 	if len(s) > 0 && s[0] == '-' {
 		sign = true
 		i++
@@ -2512,10 +2513,20 @@ func parseInt(s string) (n int64, ok bool) {
 		return 0, false
 	}
 	for ; i < len(s); i++ {
-		if s[i] >= '0' && s[i] <= '9' {
-			n = n*10 + int64(s[i]-'0')
+		if invaildSymbol > 0 {
+			if s[i] >= '0' && s[i] <= '9' {
+				continue
+			} else {
+				return 0, false
+			}
 		} else {
-			return 0, false
+			if s[i] >= '0' && s[i] <= '9' {
+				n = n*10 + int64(s[i]-'0')
+			} else if s[i] == '.' {
+				invaildSymbol ++
+			} else {
+				return 0, false
+			}
 		}
 	}
 	if sign {

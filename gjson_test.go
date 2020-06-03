@@ -2162,3 +2162,9 @@ func TestJoin152(t *testing.T) {
 	res := Get(json, "historical.summary.days.#.hours|@flatten|#.humidity.value")
 	assert(t, res.Raw == `[92.0,92.0,91.0,91.0,67.0]`)
 }
+
+func TestFloatStringNumber(t *testing.T) {
+	json := `{"float": "1591161020490.816162"}`
+	fmt.Print(Get(json, "float").Int())
+	assert(t, Get(json, "float").Int() == 1591161020490)
+}
